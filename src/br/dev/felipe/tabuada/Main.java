@@ -1,17 +1,15 @@
 package br.dev.felipe.tabuada;
 
+import br.dev.felipe.tabuada.gui.TelaTabuada;
 import br.dev.felipe.tabuada.model.Tabuada;
+import javax.swing.JFrame;
+
 
 public class Main {
 
 	public static void main(String[] args) {
-		Tabuada tabuada = new Tabuada(5, 1, 10);
-		tabuada.mostrarTabuada();
-		
-		
-		
-		
-		
+		TelaTabuada tela = new TelaTabuada();
+		tela.criarTela("Tabuada DS1MA");	
 		
 		
 		
