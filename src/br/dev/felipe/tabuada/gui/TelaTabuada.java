@@ -1,97 +1,136 @@
 package br.dev.felipe.tabuada.gui;
 
-import java.awt.Container;
-
 import javax.swing.*;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import br.dev.felipe.tabuada.model.Tabuada;
 
 public class TelaTabuada {
+
+	// Comunicação com o usário e Inputs
 	private JLabel labelMultiplicando;
 	private JLabel labelMinMultiplicador;
 	private JLabel labelMaxMultiplicador;
-	private JTextField textMultiplicador;
+	private JTextField textMultiplicando;
 	private JTextField textMinMultiplicador;
 	private JTextField textMaxMultiplicador;
+
+	// Botões para executar os métodos
 	private JButton buttonCalcular;
 	private JButton buttonLimpar;
+
+	// Exibição e navegação dos resultados
 	private JList listTabuada;
 	private JScrollPane scrollTabuada;
 	private String tituloDaTela;
 
-	
-	
-	
 	public void criarTela(String tituloDaTela) {
 		this.tituloDaTela = tituloDaTela;
+
+		// Instanciando e configurando o JFrame
 		JFrame tela = new JFrame();
 		tela.setTitle(this.tituloDaTela);
 		tela.setSize(265, 600);
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tela.setResizable(false);
+
+		// Criando text labels para a janela
 		tela.setLayout(null);
-		
-		
-		//obtendo a referencia do painel de conteudo da tela
-		Container container = tela.getContentPane();
-		
-		//Criar o label multiplicando
 		labelMultiplicando = new JLabel();
 		labelMultiplicando.setText("Multiplicando:");
-		labelMultiplicando.setBounds(20, 20, 150, 30);
-		
-		//Criar o label MinMultiplicador
+		labelMultiplicando.setBounds(5, 20, 150, 30);
+
 		labelMinMultiplicador = new JLabel();
-		labelMinMultiplicador.setText("Minimo multiplicador: ");
-		labelMinMultiplicador.setBounds(20, 60, 150, 30);
-		
-		//Criar o label MaxMultiplicador
+		labelMinMultiplicador.setText("Multiplicador Mínimo:");
+		labelMinMultiplicador.setBounds(5, 60, 150, 30);
+
 		labelMaxMultiplicador = new JLabel();
-		labelMaxMultiplicador.setText("Máximo multiplicador: ");
-		labelMaxMultiplicador.setBounds(20, 100, 150, 30);
-		
-		//Criar o text Multiplicador
-		textMultiplicador = new JTextField();
-		textMultiplicador.setBounds(250, 20, 80, 30);
-		
-		//Criar o text MinMultiplicador
+		labelMaxMultiplicador.setText("Multiplicador Máximo:");
+		labelMaxMultiplicador.setBounds(5, 100, 150, 30);
+
+		// Criando text fields para a janela
+		textMultiplicando = new JTextField();
+		textMultiplicando.setBounds(195, 20, 50, 30);
+
 		textMinMultiplicador = new JTextField();
-		textMinMultiplicador.setBounds(250, 60, 80, 30);
-		
-		//Criar o text MaxMultiplicador
+		textMinMultiplicador.setBounds(195, 60, 50, 30);
+
 		textMaxMultiplicador = new JTextField();
-		textMaxMultiplicador.setBounds(250, 100, 80, 30);
-		
-		
-		//Criar o button Calcular
+		textMaxMultiplicador.setBounds(195, 100, 50, 30);
+
+		// Criando botões para a janela
 		buttonCalcular = new JButton("Calcular");
-		buttonCalcular.setBounds(20, 140, 100, 30);
-		
-		//Criar o button Limpar
+		buttonCalcular.setBounds(5, 150, 100, 30);
+		// setBounds == tamanho da tela
+
 		buttonLimpar = new JButton("Limpar");
-		buttonLimpar.setBounds(130, 140, 100, 30);
-		
-		
-		//Adicionando os componentes no painel de conteúdo do JFrame
+		buttonLimpar.setBounds((195 - 50), 150, 100, 30);
+
+		// Obtendo referência do Container, o painel de conteudo da janela
+		Container container = tela.getContentPane();
+
+		// Criar o JList que vai receber a tabuada
+		listTabuada = new JList();
+
+		// Criar o Scrollpane que vai receber o JList
+		scrollTabuada = new JScrollPane(listTabuada);
+		scrollTabuada.setBounds(20, 200, 210, 340);
+
+		// Adicionando elementos na janela
 		container.add(labelMultiplicando);
 		container.add(labelMinMultiplicador);
 		container.add(labelMaxMultiplicador);
-		container.add(textMultiplicador);
+
+		container.add(textMultiplicando);
 		container.add(textMinMultiplicador);
 		container.add(textMaxMultiplicador);
+
 		container.add(buttonCalcular);
 		container.add(buttonLimpar);
-		
-		
-		//Tornar a tela visível DEVE ser a ultima instrução
+
+		container.add(scrollTabuada);
+
+		// Adicionando escutantes de ação aos botões
+		buttonCalcular.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Coletando os valores nos campos
+				String multiplicando = textMultiplicando.getText();
+				String minMultiplicador = textMinMultiplicador.getText();
+				String maxMultiplicador = textMaxMultiplicador.getText();
+
+				// Convertendo os valores para double
+				double multiplicandoDouble = Double.parseDouble(multiplicando);
+				double minMultiplicadorDouble = Double.parseDouble(minMultiplicador);
+				double maxMultiplicadorDouble = Double.parseDouble(maxMultiplicador);
+
+				// Fornecendo os valores para a tabuada
+				Tabuada tabuada = new Tabuada(multiplicandoDouble, minMultiplicadorDouble, maxMultiplicadorDouble);
+
+				// Trazer a tabuada e colocar na tela
+				String[] tabuadaVisual = tabuada.mostrarTabuada();
+				listTabuada.setListData(tabuadaVisual);
+
+			}
+		});
+
+		buttonLimpar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textMultiplicando.setText("");
+				textMaxMultiplicador.setText("");
+				textMinMultiplicador.setText("");
+				listTabuada.setListData(new String[0]);
+				textMultiplicando.requestFocus();
+
+			}
+		});
+
+		// tornando a tela visível
 		tela.setVisible(true);
 	}
-	
-	private void exibirTabuada() {
-		
-	}
-	
-	private void limparTabuada() {
-		
-	}
-	
-	
+
 }

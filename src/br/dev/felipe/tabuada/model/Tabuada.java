@@ -1,54 +1,62 @@
 package br.dev.felipe.tabuada.model;
+
 public class Tabuada {
-    private double multiplicando;
-    private double minimoMultiplicador;
-    private double maximoMultiplicador;
 
-    public Tabuada(double multiplicando, double minimoMultiplicador, double maximoMultiplicador) {
-        this.multiplicando = multiplicando;
-        this.minimoMultiplicador = minimoMultiplicador;
-        this.maximoMultiplicador = maximoMultiplicador;
-    }
+	private double multiplicando;
+	private double multiplicadorMinimo;
+	private double multiplicadorMaximo;
 
-    public double getMultiplicando() {
-        return multiplicando;
-    }
+	// Construtor
+	public Tabuada(double multiplicando, double multiplicadorMinimo, double multiplicadorMaximo) {
+		setMultiplicando(multiplicando);
+		setMultiplicadorMinimo(multiplicadorMinimo);
+		setMultiplicadorMaximo(multiplicadorMaximo);
+	}
 
-    public void setMultiplicando(double multiplicando) {
-        this.multiplicando = multiplicando;
-    }
+	public void setMultiplicando(double multiplicando) {
+		this.multiplicando = multiplicando;
+	}
 
-    public double getMinimoMultiplicador() {
-        return minimoMultiplicador;
-    }
+	public double getMultiplicando() {
+		return multiplicando;
+	}
 
-    public void setMinimoMultiplicador(double minimoMultiplicador) {
-        this.minimoMultiplicador = minimoMultiplicador;
-    }
+	public void setMultiplicadorMinimo(double multiplicadorMinimo) {
+		this.multiplicadorMinimo = multiplicadorMinimo;
+	}
 
-    public double getMaximoMultiplicador() {
-        return maximoMultiplicador;
-    }
+	public double getMultiplicadorMinimo() {
+		return multiplicadorMinimo;
+	}
 
-    public void setMaximoMultiplicador(double maximoMultiplicador) {
-        this.maximoMultiplicador = maximoMultiplicador;
-    }
+	public void setMultiplicadorMaximo(double multiplicadorMaximo) {
+		this.multiplicadorMaximo = multiplicadorMaximo;
+	}
 
-    //public void mostrarTabuada() {
-    //    for (double i = minimoMultiplicador; i <= maximoMultiplicador; i++) {
-    //        System.out.println(multiplicando + " x " + i + " = " + (multiplicando * i));
-    //    }
-    //}
-    
-    public void mostrarTabuada() {
-    	if (minimoMultiplicador > maximoMultiplicador) {
-    		double troca = minimoMultiplicador;
-    		minimoMultiplicador = maximoMultiplicador;
-    		maximoMultiplicador = troca;
-    	}
-    	while (minimoMultiplicador <= maximoMultiplicador) {
-    		double produto = multiplicando * minimoMultiplicador;
-    		System.out.println(multiplicando + " X " + minimoMultiplicador + " = " + produto);
-    	}
-    }
+	public double getMultiplicadorMaximo() {
+		return multiplicadorMaximo;
+	}
+
+	// Retornar a tabuada com os cálculos
+	public String[] mostrarTabuada() {
+		if (multiplicadorMinimo > multiplicadorMaximo) {
+			double troca = multiplicadorMinimo;
+			multiplicadorMinimo = multiplicadorMaximo;
+			multiplicadorMaximo = troca;
+		}
+
+		int tamanhoTabuada = (int) (multiplicadorMaximo - multiplicadorMinimo + 1);
+		String[] tabuada = new String[tamanhoTabuada];
+		double produto;
+		int i = 0;
+		while (i < tamanhoTabuada) {
+			produto = multiplicando * multiplicadorMinimo;
+			tabuada[i] = (multiplicando + " X " + multiplicadorMinimo + " = " + produto);
+			multiplicadorMinimo++;
+			i++;
+
+		}
+		return tabuada;
+	}
+
 }
